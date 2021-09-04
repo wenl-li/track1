@@ -7,7 +7,18 @@ According to the competition page, We are offering an online item recommendation
 # Preprocessing
 Take a deep looking into the training set data. The longest information colunm is user's click history we couldn't use directly. I try to add time information into click sequence in the feature engineering step. So I add some columns in the new data training set during preprocess step, they are explained below.
 </br>item_event: Dividing the users click history by a time window which length is 600 seconds. 
-</br>interval: The interval between purchase actions and the last click timestamp. I weight it by the formla: $$ Interval(i) = 1 - 0.05 * i $$
-</br>time_weights:
+</br>interval: The interval between purchase actions and the last click timestamp. I weight it by the formla: $$ Interval(i) = 1 - 0.05 * i $$ Where, i is a group number of time groups cutting by one day, two days, and so on. I choose those groups according to the click history distribution. 
+</br>time_weights: Calculate the interval time between all the click behavior and the last click using the same interval formla.
 # Feature Engineering
+#### Feature 1: User-item Scores
+Calculating the embedding of each item using Word2vec method. I add all the history clicked item by the weight of time as users' embedding. Then calculate the correlation between item embedding and user embedding as user-item scores. *9 columns for 9 items*
+#### Feature 2: Item Protrait
+Choose useful features in item_vec in the item_info.csv file. *9×4 columns*
+#### Feature 3: User Protrait
+User Protrait information in trainset.csv.*10 columns*
+#### Feature 4: Price
+Item price.*9 columns*
+#### Feature 5: User Class Distance
+Add up the item class in click history as user's interested class, calculate the cosine distance between it and exposed item class.*9 columns*
 # Model
+LightGBM 
